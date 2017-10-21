@@ -1,0 +1,18 @@
+homeassistant:
+  name: Home
+  latitude: !secret latitude
+  longitude: !secret longitude
+  elevation: !secret elevation
+  time_zone: !secret time_zone
+  unit_system: metric
+
+light:
+  - platform: lifx
+
+switch:
+  - platform: wake_on_lan
+    mac_address: !secret pc_mac_address
+
+frontend:
+http:
+config:

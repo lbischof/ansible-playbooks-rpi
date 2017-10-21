@@ -1,8 +1,35 @@
 ---
 
-- name: Install ack
-  package: name=ack
+- name: Copy script
+  copy: src=check_config.sh dest=/usr/local/bin mode=0755
   become: yes
 
-- name: Copy script
-  copy: src=edit_configuration.sh dest=/home/pi mode=0755
+- name: Copy configuration
+  copy:
+    src: "{{ item }}"
+    dest: /home/homeassistant/.homeassistant/
+    mode: 0644
+    owner: homeassistant
+    group: homeassistant
+  become: yes
+  register: ha_config
+  with_items:
+    - configuration.yaml
+    - secrets.yaml
+
+- name: Check configuration
+  command: /usr/local/bin/check_config.sh
+  become: yes
+  register: ha_check_config
+  when: ha_config.changed
+
+- debug: msg="{{ ha_check_config.stdout_lines }}"
+  when: 'ha_config.changed and "Error" in ha_check_config.stdout'
+
+- fail: msg="Configuration not valid"
+  when: 'ha_config.changed and "Error" in ha_check_config.stdout'
+
+- name: Restart homeassistant
+  service: name=home-assistant@homeassistant state=restarted
+  become: yes
+  when: ha_config.changed
