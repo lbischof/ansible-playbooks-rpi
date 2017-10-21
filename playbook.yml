@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  remote_user: pi
+  vars:
+    sshd_config: /etc/ssh/sshd_config
+  roles:
+    - hardening
+    - base
+    - homeassistant

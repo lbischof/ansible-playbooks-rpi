@@ -1,0 +1,17 @@
+---
+
+- name: Install neovim
+  package: name=neovim
+  become: yes
+
+- name: Set neovim as default vim
+  file: src=/usr/bin/nvim dest=/usr/bin/vim state=link
+  become: yes
+
+- name: Deploy neovim config files
+  copy: src=nvim dest=~/.config
+  register: nvim_config
+
+- name: Run PlugInstall
+  shell: vim +PlugInstall +qall
+  when: nvim_config.changed
