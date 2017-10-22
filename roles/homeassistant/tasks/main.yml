@@ -16,6 +16,7 @@
   with_items:
     - configuration.yaml
     - secrets.yaml
+    - webostv.conf
 
 - name: Check configuration
   command: /usr/local/bin/check_config.sh
