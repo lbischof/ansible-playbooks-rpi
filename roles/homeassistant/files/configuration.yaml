@@ -78,6 +78,10 @@ media_player:
     name: webostv
     host: !secret tv_ip_address
 
+duckdns:
+  domain: !secret duckdns_domain
+  access_token: !secret duckdns_token
+
 frontend:
 http:
 config:
