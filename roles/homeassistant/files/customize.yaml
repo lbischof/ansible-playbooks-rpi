@@ -1,0 +1,5 @@
+group.all_lights:
+  friendly_name: 'Lights'
+  hidden: false
+group.all_switches:
+  hidden: false

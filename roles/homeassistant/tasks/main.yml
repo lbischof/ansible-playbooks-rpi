@@ -15,7 +15,13 @@
   register: ha_config
   with_items:
     - configuration.yaml
+    - customize.yaml
+    - groups.yaml
+    - media_players.yaml
+    - scripts.yaml
     - secrets.yaml
+    - sensors.yaml
+    - switches.yaml
     - webostv.conf
 
 - name: Check configuration

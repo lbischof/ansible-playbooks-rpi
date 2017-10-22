@@ -5,82 +5,20 @@ homeassistant:
   elevation: !secret elevation
   time_zone: !secret time_zone
   unit_system: metric
+  customize: !include customize.yaml
 
-light:
-  - platform: lifx
-
-switch:
-  - platform: wake_on_lan
-    name: Computer
-    mac_address: !secret pc_mac_address
-    host: !secret pc_ip_address
-    broadcast_address: !secret pc_ip_address
-
-sensor:
-  - platform: template
-    sensors:
-      tv_state:
-        entity_id:
-          - media_player.webostv
-          - media_player.kodi
-        value_template: >-
-          {%- if is_state('media_player.webostv', 'off') -%}
-          off
-          {%- else -%}
-          {{ states.media_player.kodi.state }}
-          {%- endif -%}
-
-script:
-  tv_pause_and_turn_off:
-    sequence:
-      - service: media_player.media_pause
-        data:
-          entity_id: media_player.kodi
-      - service: media_player.turn_off
-        data:
-          entity_id: media_player.webostv
-
-media_player:
-  - platform: universal
-    name: TV
-    children:
-      - media_player.kodi
-    commands:
-      turn_on:
-        service: media_player.kodi_call_method
-        data:
-          entity_id: media_player.kodi
-          method: Addons.ExecuteAddon
-          addonid: script.json-cec
-          params:
-            command: activate
-      turn_off:
-        service: script.turn_on
-        data:
-          entity_id: script.tv_pause_and_turn_off
-      volume_up:
-        service: media_player.volume_up
-        data:
-          entity_id: media_player.webostv
-      volume_down:
-        service: media_player.volume_down
-        data:
-          entity_id: media_player.webostv
-      volume_mute:
-        service: media_player.volume_mute
-        data:
-          entity_id: media_player.webostv
-    attributes:
-      state: sensor.tv_state
-  - platform: kodi
-    host: !secret kodi_ip_address
-  - platform: webostv
-    name: webostv
-    host: !secret tv_ip_address
+group: !include groups.yaml
+switch: !include switches.yaml
+sensor: !include sensors.yaml
+script: !include scripts.yaml
+media_player: !include media_players.yaml
 
 duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
+
+light:
+  - platform: lifx
 
 frontend:
 http:

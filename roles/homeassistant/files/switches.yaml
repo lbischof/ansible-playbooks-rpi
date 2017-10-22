@@ -1,0 +1,5 @@
+- platform: wake_on_lan
+  name: Computer
+  mac_address: !secret pc_mac_address
+  host: !secret pc_ip_address
+  broadcast_address: !secret pc_ip_address

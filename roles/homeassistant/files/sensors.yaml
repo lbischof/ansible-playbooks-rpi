@@ -1,0 +1,12 @@
+- platform: template
+  sensors:
+    tv_state:
+      entity_id:
+        - media_player.webostv
+        - media_player.kodi
+      value_template: >-
+        {%- if is_state('media_player.webostv', 'off') -%}
+        off
+        {%- else -%}
+        {{ states.media_player.kodi.state }}
+        {%- endif -%}
