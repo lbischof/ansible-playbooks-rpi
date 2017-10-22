@@ -11,7 +11,46 @@ light:
 
 switch:
   - platform: wake_on_lan
+    name: Computer
     mac_address: !secret pc_mac_address
+    host: !secret pc_ip_address
+    broadcast_address: !secret pc_ip_address
+
+media_player:
+  - platform: universal
+    name: Test Universal
+    children:
+      - media_player.kodi
+      - media_player.lg_webos_smart_tv
+    commands:
+      turn_on:
+        service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Addons.ExecuteAddon
+          addonid: script.json-cec
+          params:
+            command: activate
+      turn_off:
+      - service: media_player.media_stop
+        data:
+          entity_id: media_player.kodi
+      - service: media_player.turn_off
+        data:
+          entity_id: media_player.lg_webos_smart_tv
+      volume_up:
+        service: media_player.volume_up
+        data:
+          entity_id: media_player.lg_webos_smart_tv
+      volume_down:
+        service: media_player.volume_down
+        data:
+          entity_id: media_player.lg_webos_smart_tv
+  - platform: kodi
+    host: !secret kodi_ip_address
+  - platform: webostv
+    host: !secret tv_ip_address
+    timeout: 5
 
 frontend:
 http:
