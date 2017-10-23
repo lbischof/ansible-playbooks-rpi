@@ -1,5 +1,9 @@
 ---
 
+- name: Install nmap
+  package: name=nmap state=installed
+  become: yes
+
 - name: Copy script
   copy: src=check_config.sh dest=/usr/local/bin mode=0755
   become: yes
