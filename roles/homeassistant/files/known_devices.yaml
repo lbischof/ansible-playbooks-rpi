@@ -1,0 +1,11 @@
+xiaomi:
+  mac: !secret xiaomi_mac
+  name: !secret xiaomi_name
+  picture:
+  track: true
+
+samsung:
+  mac: !secret samsung_mac
+  name: !secret samsung_name
+  picture:
+  track: true
