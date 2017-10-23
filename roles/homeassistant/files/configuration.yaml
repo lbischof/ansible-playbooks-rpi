@@ -19,6 +19,8 @@ device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.0.1/24
     track_new_devices: false
+    home_interval: 5
+    consider_home: 0:15
 
 duckdns:
   domain: !secret duckdns_domain
