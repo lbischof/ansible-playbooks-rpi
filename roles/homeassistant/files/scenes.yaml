@@ -1,0 +1,26 @@
+- name: TV Playing
+  entities:
+    light.living_room:
+      state: off
+      transition: 3
+    light.bedroom:
+      state: off
+      transition: 3
+    light.hallway:
+      state: on
+      transition: 3
+      brightness: 50
+- name: TV Paused
+  entities:
+    light.living_room:
+      state: on
+      transition: 3
+      brightness: 100
+    light.hallway:
+      state: on
+      transition: 3
+      brightness: 100
+    light.bedroom:
+      state: on
+      transition: 3
+      brightness: 100

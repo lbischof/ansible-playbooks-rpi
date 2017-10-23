@@ -1,0 +1,26 @@
+- alias: Turn off lights when watching tv
+  trigger:
+    platform: state
+    entity_id: media_player.kodi
+    to: 'playing'
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+  action:
+    service: scene.turn_on
+    entity_id: scene.tv_playing
+
+- alias: Dim lights when tv is paused
+  trigger:
+    platform: state
+    entity_id: media_player.tv
+    from: 'playing'
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+  action:
+    service: scene.turn_on
+    entity_id: scene.tv_paused
+

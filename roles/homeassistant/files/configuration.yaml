@@ -12,6 +12,12 @@ switch: !include switches.yaml
 sensor: !include sensors.yaml
 script: !include scripts.yaml
 media_player: !include media_players.yaml
+automation: !include automations.yaml
+scene: !include scenes.yaml
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.0.1/24
 
 duckdns:
   domain: !secret duckdns_domain
@@ -23,3 +29,4 @@ light:
 frontend:
 http:
 config:
+sun:

@@ -14,10 +14,12 @@
   become: yes
   register: ha_config
   with_items:
+    - automations.yaml
     - configuration.yaml
     - customize.yaml
     - groups.yaml
     - media_players.yaml
+    - scenes.yaml
     - scripts.yaml
     - secrets.yaml
     - sensors.yaml
