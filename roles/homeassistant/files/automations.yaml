@@ -24,3 +24,22 @@
     service: scene.turn_on
     entity_id: scene.tv_paused
 
+- alias: First person home
+  trigger:
+    platform: state
+    entity_id: group.family
+    to: 'home'
+  action:
+    - service: light.turn_on
+      entity_id: light.hallway
+      data:
+        brightness: 255
+
+- alias: Everyone left
+  trigger:
+    platform: state
+    entity_id: group.family
+    from: 'home'
+  action:
+    - service: light.turn_off
+      entity_id: group.all_lights

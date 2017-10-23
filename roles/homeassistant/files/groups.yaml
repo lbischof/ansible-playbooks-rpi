@@ -4,3 +4,7 @@ default_view:
     - group.all_lights
     - media_player.tv
     - group.all_switches
+family:
+  entities:
+    - device_tracker.samsung
+    - device_tracker.xiaomi
