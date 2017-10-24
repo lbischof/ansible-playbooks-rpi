@@ -21,6 +21,10 @@ device_tracker:
     track_new_devices: false
     home_interval: 5
     consider_home: 0:15
+  - platform: ping
+    hosts:
+      xiaomi: !secret xiaomi_host
+      samsung: !secret samsung_host
 
 duckdns:
   domain: !secret duckdns_domain

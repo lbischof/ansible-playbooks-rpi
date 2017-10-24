@@ -30,7 +30,7 @@
   attributes:
     state: sensor.tv_state
 - platform: kodi
-  host: !secret kodi_ip_address
+  host: !secret kodi_host
 - platform: webostv
   name: webostv
-  host: !secret tv_ip_address
+  host: !secret tv_host
