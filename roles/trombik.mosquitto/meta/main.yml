@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Tomoyuki Sakurai
+  description: Configures mosquitto MQTT server
+  company: Reallyenglish
+  license: BSD
+  min_ansible_version: 2.0
+  platforms:
+  - name: FreeBSD
+    versions:
+    - 10.3
+  - name: OpenBSD
+    versions:
+    - 6.0
+  - name: Ubuntu
+    versions:
+    - trusty
+    - xenial
+  - name: EL
+    versions:
+    - 7
+
+  galaxy_tags:
+    - mqtt
+dependencies:
+  - { role: reallyenglish.apt-repo, when: ansible_os_family == "Debian" }
+  - { role: reallyenglish.redhat-repo, when: ansible_os_family == "RedHat" }

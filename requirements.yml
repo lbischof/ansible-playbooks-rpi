@@ -2,3 +2,5 @@
 
 - src: jdauphant.nginx
 - src: geerlingguy.certbot
+- src: trombik.ansible-role-mosquitto
+  name: trombik.mosquitto
