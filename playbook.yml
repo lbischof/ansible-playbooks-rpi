@@ -20,21 +20,27 @@
       nginx_sites:
         redirect:
           - server_name _
-          - listen 80 default_server
+          - listen [::]:80 default_server ipv6only=off
           - location / {
-              return 301 https://$host$request_uri
+              return 301 https://$host$request_uri;
             }
-            location /.well-known {
+          - location /.well-known {
               alias /var/www/html/.well-known;
             }
         default:
           - server_name ha.lorenz.io
-          - listen 443 ssl
+          - listen [::]:443 default_server ipv6only=off http2
           - ssl_certificate /etc/letsencrypt/live/ha.lorenz.io/fullchain.pem
           - ssl_certificate_key /etc/letsencrypt/live/ha.lorenz.io/privkey.pem
+          - ssl_dhparam /etc/ssl/dhparam.pem
           - ssl_client_certificate /etc/ssl/ca.crt
           - ssl_verify_client on
           - add_header Strict-Transport-Security "max-age=31536000; includeSubdomains"
+          - ssl on
+          - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
+          - ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4"
+          - ssl_prefer_server_ciphers on
+          - ssl_session_cache shared:SSL:10m
           - proxy_buffering off
           - location / {
               proxy_pass http://localhost:8123;
