@@ -22,7 +22,6 @@
     - configuration.yaml
     - customize.yaml
     - groups.yaml
-    - known_devices.yaml
     - media_players.yaml
     - scenes.yaml
     - scripts.yaml
@@ -30,6 +29,16 @@
     - sensors.yaml
     - switches.yaml
     - webostv.conf
+
+- name: Copy known_devices
+  copy:
+    src: known_devices.yaml
+    dest: /home/homeassistant/.homeassistant/
+    mode: 0644
+    owner: homeassistant
+    group: homeassistant
+    force: no
+  become: yes
 
 - name: Check configuration
   command: /usr/local/bin/check_config.sh
