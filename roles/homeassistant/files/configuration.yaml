@@ -18,13 +18,14 @@ scene: !include scenes.yaml
 device_tracker:
   - platform: nmap_tracker
     hosts: 192.168.0.1/24
-    track_new_devices: false
+    track_new_devices: no
     home_interval: 5
     consider_home: 0:15
   - platform: ping
     hosts:
-      xiaomi: !secret xiaomi_host
-      samsung: !secret samsung_host
+      xiaomi_ping: !secret xiaomi_host
+      samsung_ping: !secret samsung_host
+  - platform: bluetooth_tracker
 
 duckdns:
   domain: !secret duckdns_domain

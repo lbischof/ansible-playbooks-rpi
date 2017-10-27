@@ -4,7 +4,19 @@ default_view:
     - group.all_lights
     - media_player.tv
     - group.all_switches
+    - sensor.person_samsung
+    - sensor.person_xiaomi
 family:
   entities:
-    - device_tracker.samsung
-    - device_tracker.xiaomi
+    - group.person_samsung
+    - group.person_xiaomi
+person_samsung:
+  entities:
+    - device_tracker.samsung_nmap
+    - device_tracker.samsung_ping
+    - device_tracker.samsung_bt
+person_xiaomi:
+  entities:
+    - device_tracker.xiaomi_nmap
+    - device_tracker.xiaomi_ping
+    - device_tracker.xiaomi_bt
