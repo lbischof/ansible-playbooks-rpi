@@ -39,7 +39,7 @@
   with_items: "{{ clients }}"
 
 - name: "Generate p12 file"
-  command: "openssl pkcs12 -export -clcerts -in {{ item }}.crt -inkey {{ item }}.key -out {{ client }}.p12 -passout pass:"
+  command: "openssl pkcs12 -export -clcerts -in {{ item }}.crt -inkey {{ item }}.key -out {{ item }}.p12 -passout pass:"
   become: yes
   args:
     chdir: "{{ certs_dir }}"
