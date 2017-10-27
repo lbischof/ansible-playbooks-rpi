@@ -2,9 +2,46 @@
 
 - hosts: all
   remote_user: pi
-  vars:
-    sshd_config: /etc/ssh/sshd_config
   roles:
     - hardening
     - base
     - homeassistant
+    - openssl
+    - role: geerlingguy.certbot
+      become: yes
+    - role: jdauphant.nginx
+      become: yes
+      nginx_configs:
+        proxy:
+          - map $http_upgrade $connection_upgrade {
+              default upgrade;
+              ''      close;
+            }
+      nginx_sites:
+        redirect:
+          - server_name _
+          - listen 80 default_server
+          - location / {
+              return 301 https://$host$request_uri
+            }
+            location /.well-known {
+              alias /var/www/html/.well-known;
+            }
+        default:
+          - server_name ha.lorenz.io
+          - listen 443 ssl
+          - ssl_certificate /etc/letsencrypt/live/ha.lorenz.io/fullchain.pem
+          - ssl_certificate_key /etc/letsencrypt/live/ha.lorenz.io/privkey.pem
+          - ssl_client_certificate /etc/ssl/ca.crt
+          - ssl_verify_client on
+          - add_header Strict-Transport-Security "max-age=31536000; includeSubdomains"
+          - proxy_buffering off
+          - location / {
+              proxy_pass http://localhost:8123;
+              proxy_set_header Host $host;
+              proxy_redirect http:// https://;
+              proxy_http_version 1.1;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+            }
