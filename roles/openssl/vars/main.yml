@@ -1,0 +1,7 @@
+---
+
+ca_key: ca.key
+ca_cert: ca.crt
+certs_dir: /etc/ssl/
+clients:
+  - client

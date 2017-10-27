@@ -1,0 +1,48 @@
+---
+
+- name: "Generate CA private key"
+  command: "openssl genrsa -out {{ ca_key }} 4096"
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ ca_key }}"
+
+- name: "Create root CA files"
+  command: "openssl req -new -x509 -days 365 -key {{ ca_key }} -out {{ ca_cert }} -subj \"/C=CH\""
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ ca_cert }}"
+
+- name: "Generate client private keys"
+  command: "openssl genrsa -out {{ item }}.key 4096"
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ item }}.key"
+  with_items: "{{ clients }}"
+
+- name: "Generate client certificate signing requests"
+  command: "openssl req -new -key {{ item }}.key -out {{ item }}.csr -subj \"/C=CH/CN=example.com\""
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ item }}.csr"
+  with_items: "{{ clients }}"
+
+- name: "Generate client certificates"
+  command: "openssl x509 -req -days 365 -in {{ item }}.csr -CA {{ ca_cert }} -CAkey {{ ca_key }} -set_serial 01 -out {{ item }}.crt"
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ item }}.crt"
+  with_items: "{{ clients }}"
+
+- name: "Generate p12 file"
+  command: "openssl pkcs12 -export -clcerts -in {{ item }}.crt -inkey {{ item }}.key -out {{ client }}.p12 -passout pass:"
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "{{ item }}.p12"
+  with_items: "{{ clients }}"
+
