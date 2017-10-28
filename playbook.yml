@@ -34,7 +34,7 @@
           - ssl_certificate_key /etc/letsencrypt/live/ha.lorenz.io/privkey.pem
           - ssl_dhparam /etc/ssl/dhparam.pem
           - ssl_client_certificate /etc/ssl/ca.crt
-          - ssl_verify_client on
+          - ssl_verify_client optional
           - add_header Strict-Transport-Security "max-age=31536000; includeSubdomains"
           - ssl on
           - ssl_protocols TLSv1 TLSv1.1 TLSv1.2
@@ -43,7 +43,19 @@
           - ssl_session_cache shared:SSL:10m
           - proxy_buffering off
           - location / {
+              if ($ssl_client_verify != SUCCESS) {
+                return 401;
+              }
               proxy_pass http://localhost:8123;
+              proxy_set_header Host $host;
+              proxy_redirect http:// https://;
+              proxy_http_version 1.1;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header Upgrade $http_upgrade;
+              proxy_set_header Connection $connection_upgrade;
+            }
+          - location /api/google_assistant {
+              proxy_pass http://localhost:8123/api/google_assistant;
               proxy_set_header Host $host;
               proxy_redirect http:// https://;
               proxy_http_version 1.1;
