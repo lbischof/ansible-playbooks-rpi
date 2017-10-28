@@ -46,3 +46,9 @@
     creates: "{{ item }}.p12"
   with_items: "{{ clients }}"
 
+- name: "Generate dhparam file"
+  command: "openssl dhparam -out dhparam.pem 2048"
+  become: yes
+  args:
+    chdir: "{{ certs_dir }}"
+    creates: "dhparam.pem"
