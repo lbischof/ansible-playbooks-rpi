@@ -1,5 +1,11 @@
-group.all_lights:
-  friendly_name: 'Lights'
-  hidden: false
 group.all_switches:
+  hidden: false
+  control: hidden
+group.all_lights:
+  hidden: false
+group.all_automations:
+  hidden: false
+group.all_scripts:
+  hidden: false
+group.all_devices:
   hidden: false

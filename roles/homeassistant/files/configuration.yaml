@@ -9,30 +9,35 @@ homeassistant:
 
 group: !include groups.yaml
 switch: !include switches.yaml
-sensor: !include sensors.yaml
 script: !include scripts.yaml
-media_player: !include media_players.yaml
 automation: !include automations.yaml
 scene: !include scenes.yaml
 
+media_player:
+  - platform: kodi
+    host: !secret kodi_host
+  - platform: webostv
+    name: webostv
+    host: !secret tv_host
+  - platform: cast
+
 device_tracker:
-  - platform: nmap_tracker
-    hosts: 192.168.0.1/24
+  - platform: bluetooth_tracker
     track_new_devices: no
     home_interval: 5
     consider_home: 0:15
-  - platform: ping
-    hosts:
-      xiaomi_ping: !secret xiaomi_host
-      samsung_ping: !secret samsung_host
-  - platform: bluetooth_tracker
 
 duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
 
-light:
-  - platform: lifx
+input_slider:
+  computer_volume:
+    name: Computer Volume
+    initial: 40
+    min: 0
+    max: 100
+    step: 10
 
 google_assistant:
   project_id: !secret ga_project_id
@@ -40,6 +45,15 @@ google_assistant:
   access_token: !secret ga_access_token
   exposed_domains:
     - switch
+
+light:
+  - platform: lifx
+
+mqtt:
+  broker: !secret mqtt_broker
+
+updater:
+  include_used_components: True
 
 frontend:
 http:

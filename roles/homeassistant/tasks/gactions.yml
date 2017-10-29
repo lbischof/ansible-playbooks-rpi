@@ -1,0 +1,9 @@
+---
+
+- name: Download gactions cli
+  get_url: url=https://dl.google.com/gactions/updates/bin/linux/arm/gactions dest=~ mode=755
+
+- name: Copy project.json
+  copy: src=gactions_project.json dest=~/project.json
+
+

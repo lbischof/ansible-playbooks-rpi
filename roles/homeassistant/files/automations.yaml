@@ -8,13 +8,12 @@
       entity_id: sun.sun
       state: below_horizon
   action:
-    service: scene.turn_on
-    entity_id: scene.tv_playing
-
+    - service: scene.turn_on
+      entity_id: scene.tv_playing
 - alias: Dim lights when tv is paused
   trigger:
     platform: state
-    entity_id: media_player.tv
+    entity_id: media_player.kodi
     from: 'playing'
   condition:
     - condition: state
@@ -23,6 +22,25 @@
   action:
     service: scene.turn_on
     entity_id: scene.tv_paused
+
+- alias: Computer volume slider
+  trigger:
+    platform: state
+    entity_id: input_slider.computer_volume
+  action:
+    - service: mqtt.publish
+      data_template:
+        topic: "computer/volume/set"
+        payload: '{{ states.input_slider.computer_volume.state | int }}'
+- alias: Computer volume changed
+  trigger:
+    platform: mqtt
+    topic: computer/volume/status
+  action:
+    service: input_slider.select_value
+    data_template:
+      entity_id: input_slider.computer_volume
+      value: "{{ trigger.payload }}"
 
 - alias: First person home
   trigger:
@@ -47,3 +65,5 @@
   action:
     - service: light.turn_off
       entity_id: group.all_lights
+    - service: switch.turn_off
+      entity_id: switch.radio

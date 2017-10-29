@@ -2,3 +2,54 @@
   name: Computer
   mac_address: !secret pc_mac
   host: !secret pc_host
+  turn_off:
+    service: mqtt.publish
+    data:
+      topic: computer/power/set
+      payload: OFF
+- platform: mqtt
+  name: Radio
+  command_topic: computer/radio/set
+  state_topic: computer/radio/status
+- platform: template
+  switches:
+    tv:
+      value_template: >-
+        {%- if is_state('media_player.webostv', 'off') -%}
+        off
+        {%- else -%}
+        on
+        {%- endif -%}
+      turn_on:
+        service: media_player.kodi_call_method
+        data:
+          entity_id: media_player.kodi
+          method: Addons.ExecuteAddon
+          addonid: script.json-cec
+          params:
+            command: activate
+      turn_off:
+        service: script.turn_on
+        data:
+          entity_id: script.tv_pause_and_turn_off
+    juice:
+      value_template: >
+        {% if is_state('media_player.living_room_speaker', 'playing') %}
+          {% if is_state_attr('media_player.living_room_speaker', 'media_content_id', 'http://s1.hotdogradio.com/CJSU') %}
+            on
+          {% else %}
+            off
+          {% endif %}
+        {% else %}
+          off
+        {% endif %}
+      turn_on:
+        - service: media_player.play_media
+          data:
+            entity_id: media_player.living_room_speaker
+            media_content_id: http://s1.hotdogradio.com/CJSU
+            media_content_type: audio/mp3
+      turn_off:
+        - service: media_player.turn_off
+          data:
+            entity_id: media_player.living_room_speaker

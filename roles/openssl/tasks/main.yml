@@ -8,11 +8,11 @@
     creates: "{{ ca_key }}"
 
 - name: "Create root CA files"
-  command: "openssl req -new -x509 -days 365 -key {{ ca_key }} -out {{ ca_cert }} -subj \"/C=CH\""
+  command: "openssl req -new -x509 -days 365 -key {{ ca_key }} -out certs/{{ ca_cert }} -subj \"/C=CH\""
   become: yes
   args:
     chdir: "{{ certs_dir }}"
-    creates: "{{ ca_cert }}"
+    creates: "certs/{{ ca_cert }}"
 
 - name: "Generate client private keys"
   command: "openssl genrsa -out {{ item }}.key 4096"

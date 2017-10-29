@@ -22,11 +22,9 @@
     - configuration.yaml
     - customize.yaml
     - groups.yaml
-    - media_players.yaml
     - scenes.yaml
     - scripts.yaml
     - secrets.yaml
-    - sensors.yaml
     - switches.yaml
     - webostv.conf
 
@@ -42,6 +40,7 @@
 
 - name: Check configuration
   command: /usr/local/bin/check_config.sh
+  ignore_errors: yes
   become: yes
   register: ha_check_config
   when: ha_config.changed
@@ -56,3 +55,9 @@
   service: name=home-assistant@homeassistant state=restarted
   become: yes
   when: ha_config.changed
+
+- name: copy htpasswd
+  copy: src=htpasswd dest=/etc/nginx/
+  become: yes
+
+- include: gactions.yml

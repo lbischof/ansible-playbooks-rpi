@@ -1,27 +1,9 @@
-xiaomi_nmap:
-  mac: !secret xiaomi_mac
-  name: !secret xiaomi_name
-  track: true
-
-xiaomi_ping:
-  name: !secret xiaomi_name
-  track: true
-
-xiaomi_bt:
+xiaomi:
   mac: !secret xiaomi_bt_mac
   name: !secret xiaomi_name
   track: true
 
-samsung_nmap:
-  mac: !secret samsung_mac
-  name: !secret samsung_name
-  track: true
-
-samsung_ping:
-  name: !secret samsung_name
-  track: true
-
-samsung_bt:
+samsung:
   mac: !secret samsung_bt_mac
   name: !secret samsung_name
   track: true

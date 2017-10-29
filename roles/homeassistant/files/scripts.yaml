@@ -6,3 +6,22 @@ tv_pause_and_turn_off:
     - service: media_player.turn_off
       data:
         entity_id: media_player.webostv
+computer_volume_raise:
+  sequence:
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.computer_volume
+        value: >
+          {% if (states('input_slider.computer_volume') | int + 10) <= 100 %}
+            {{ states.input_slider.computer_volume.state | int + 10 }}
+          {% endif %}
+
+computer_volume_lower:
+  sequence:
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.computer_volume
+        value: >
+          {% if (states('input_slider.computer_volume') | int - 10) >= 0 %}
+            {{ states.input_slider.computer_volume.state | int - 10 }}
+          {% endif %}

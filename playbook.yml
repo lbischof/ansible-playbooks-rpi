@@ -2,11 +2,21 @@
 
 - hosts: all
   remote_user: pi
+  vars:
+    mosquitto_bind_address: 0.0.0.0
   roles:
     - hardening
-    - base
     - homeassistant
+    - base
     - openssl
+    - role: trombik.mosquitto
+      become: yes
+      mosquitto_config:
+        - "user {{ mosquitto_user }}"
+        - "pid_file {{ mosquitto_pid_file }}"
+        - "bind_address {{ mosquitto_bind_address }}"
+        - "port {{ mosquitto_port }}"
+        - "log_dest syslog"
     - role: geerlingguy.certbot
       become: yes
     - role: jdauphant.nginx
@@ -43,9 +53,18 @@
           - ssl_session_cache shared:SSL:10m
           - proxy_buffering off
           - location / {
-              if ($ssl_client_verify != SUCCESS) {
-                return 401;
+              if ($ssl_client_verify = SUCCESS) {
+                set $auth_basic off;
               }
+              if ($ssl_client_verify != SUCCESS) {
+                set $auth_basic Restricted;
+              }
+              auth_basic $auth_basic;
+              auth_basic_user_file /etc/nginx/htpasswd;
+              satisfy any;
+              allow 192.168.0.1/24;
+              allow 127.0.0.1;
+              deny all;
               proxy_pass http://localhost:8123;
               proxy_set_header Host $host;
               proxy_redirect http:// https://;
