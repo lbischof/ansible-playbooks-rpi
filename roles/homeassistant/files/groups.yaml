@@ -4,7 +4,7 @@ default_view:
     - group.lights
     - media_player.tv
     - group.all_switches
-    - input_slider.computer_volume
+    - input_number.computer_volume
     - device_tracker.samsung
     - device_tracker.xiaomi
 debug:

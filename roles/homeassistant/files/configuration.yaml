@@ -31,7 +31,7 @@ duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
 
-input_slider:
+input_number:
   computer_volume:
     name: Computer Volume
     initial: 40

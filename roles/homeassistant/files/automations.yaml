@@ -26,20 +26,20 @@
 - alias: Computer volume slider
   trigger:
     platform: state
-    entity_id: input_slider.computer_volume
+    entity_id: input_number.computer_volume
   action:
     - service: mqtt.publish
       data_template:
         topic: "computer/volume/set"
-        payload: '{{ states.input_slider.computer_volume.state | int }}'
+        payload: '{{ states.input_number.computer_volume.state | int }}'
 - alias: Computer volume changed
   trigger:
     platform: mqtt
     topic: computer/volume/status
   action:
-    service: input_slider.select_value
+    service: input_number.set_value
     data_template:
-      entity_id: input_slider.computer_volume
+      entity_id: input_number.computer_volume
       value: "{{ trigger.payload }}"
 
 - alias: First person home
