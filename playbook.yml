@@ -27,6 +27,10 @@
               default upgrade;
               ''      close;
             }
+          - geo $trusted {
+              default 0;
+              192.168.0.1/24 1;
+            }
       nginx_sites:
         redirect:
           - server_name _
@@ -53,18 +57,17 @@
           - ssl_session_cache shared:SSL:10m
           - proxy_buffering off
           - location / {
-              if ($ssl_client_verify = SUCCESS) {
-                set $auth_basic off;
-              }
               if ($ssl_client_verify != SUCCESS) {
                 set $auth_basic Restricted;
               }
+              if ($ssl_client_verify = SUCCESS) {
+                set $auth_basic off;
+              }
+              if ($trusted) {
+                set $auth_basic off;
+              }
               auth_basic $auth_basic;
-              auth_basic_user_file /etc/nginx/htpasswd;
-              satisfy any;
-              allow 192.168.0.1/24;
-              allow 127.0.0.1;
-              deny all;
+              auth_basic_user_file htpasswd;
               proxy_pass http://localhost:8123;
               proxy_set_header Host $host;
               proxy_redirect http:// https://;
