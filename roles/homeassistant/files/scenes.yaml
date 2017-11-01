@@ -10,8 +10,6 @@
       state: on
       transition: 3
       brightness_pct: 50
-    switch.radio:
-      state: off
 - name: TV Paused
   entities:
     light.living_room:
