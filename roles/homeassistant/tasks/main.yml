@@ -22,7 +22,6 @@
     - configuration.yaml
     - customize.yaml
     - groups.yaml
-    - scenes.yaml
     - scripts.yaml
     - secrets.yaml
     - switches.yaml

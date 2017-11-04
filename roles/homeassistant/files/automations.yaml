@@ -4,42 +4,60 @@
     entity_id: media_player.kodi
     to: 'playing'
   condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
+    condition: state
+    entity_id: sun.sun
+    state: below_horizon
   action:
-    - service: scene.turn_on
-      entity_id: scene.tv_playing
+    service: script.kodi_play
 - alias: Turn off radio when watching tv
   trigger:
     platform: state
     entity_id: media_player.kodi
     to: 'playing'
   action:
-    - service: switch.turn_off
-      entity_id: switch.radio
+    service: switch.turn_off
+    entity_id: switch.radio
 - alias: Dim lights when tv is paused
   trigger:
     platform: state
     entity_id: media_player.kodi
     from: 'playing'
   condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
+    condition: state
+    entity_id: sun.sun
+    state: below_horizon
   action:
-    service: scene.turn_on
-    entity_id: scene.tv_paused
+    service: script.kodi_pause
 
 - alias: Computer volume slider
   trigger:
     platform: state
     entity_id: input_number.computer_volume
   action:
-    - service: mqtt.publish
-      data_template:
-        topic: "computer/volume/set"
-        payload: '{{ states.input_number.computer_volume.state | int }}'
+    service: mqtt.publish
+    data_template:
+      topic: "computer/volume/set"
+      payload: '{{ states.input_number.computer_volume.state | int }}'
+
+- alias: Juice radio
+  trigger:
+    platform: state
+    entity_id: switch.juice
+    to: 'on'
+  action:
+    service: media_player.volume_set
+    data:
+      entity_id: media_player.living_room_speaker
+      volume_level: 0.4
+
+- alias: Juice radio off
+  trigger:
+    platform: state
+    entity_id: switch.juice
+    to: 'off'
+  action:
+    service: script.google_home_volume_update
+
 - alias: Computer volume changed
   trigger:
     platform: mqtt
@@ -56,14 +74,11 @@
     entity_id: group.family
     to: 'home'
   condition:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
+    condition: state
+    entity_id: sun.sun
+    state: below_horizon
   action:
-    - service: light.turn_on
-      entity_id: light.hallway
-      data:
-        brightness: 255
+    service: script.family_home
 
 - alias: Everyone left
   trigger:
@@ -71,7 +86,16 @@
     entity_id: group.family
     from: 'home'
   action:
-    - service: light.turn_off
-      entity_id: group.all_lights
-    - service: switch.turn_off
-      entity_id: switch.radio
+    service: script.family_away
+
+- alias: Google Home volume
+  trigger:
+    platform: time
+    minutes: 0
+    seconds: 00
+  condition:
+    condition: state
+    entity_id: switch.juice
+    state: 'off'
+  action:
+    service: script.google_home_volume_update
