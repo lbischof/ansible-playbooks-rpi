@@ -70,7 +70,7 @@ google_home_volume_update:
           {% if now().hour < 10 %}
           0.01
           {% elif now().hour < 21 %}
-          0.7
+          0.6
           {% elif now().hour < 23 %}
           0.4
           {% else %}
@@ -83,7 +83,7 @@ google_home_volume_update:
           {% if now().hour < 10 %}
           0.01
           {% elif now().hour < 21 %}
-          0.7
+          0.6
           {% elif now().hour < 23 %}
           0.4
           {% else %}
