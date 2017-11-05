@@ -1,22 +1,39 @@
-tv_turn_off:
+tv_turned_off:
   sequence:
     - service: media_player.media_pause
       data:
         entity_id: media_player.kodi
-    - service: media_player.turn_off
-      data:
-        entity_id: media_player.webostv
 
-kodi_pause:
+kodi_paused:
   sequence:
+    # only execute the following if sun below horizon
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
     - service: light.turn_on
       data:
-        entity_id: group.all_lights
+        entity_id: light.bedroom
+        transition: 3
+        brightness_pct: 20
+    - service: light.turn_on
+      data:
+        entity_id: light.living_room
+        transition: 3
+        brightness_pct: 20
+    - service: light.turn_on
+      data:
+        entity_id: light.hallway
         transition: 3
         brightness_pct: 50
 
-kodi_play:
+kodi_playing:
   sequence:
+    - service: switch.turn_off
+      entity_id: switch.radio
+    # only execute the following if sun below horizon
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
     - service: light.turn_off
       data:
         entity_id: light.bedroom
@@ -30,6 +47,19 @@ kodi_play:
         entity_id: light.hallway
         transition: 3
         brightness_pct: 50
+
+kodi_idle:
+  sequence:
+    # only execute the following if sun below horizon
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - service: light.turn_on
+      data:
+        entity_id: group.all_lights
+        transition: 3
+        brightness_pct: 50
+
 
 google_home_volume_update:
   sequence:

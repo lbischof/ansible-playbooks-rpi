@@ -1,33 +1,34 @@
-- alias: Turn off lights when watching tv
-  trigger:
-    platform: state
-    entity_id: media_player.kodi
-    to: 'playing'
-  condition:
-    condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-    service: script.kodi_play
-- alias: Turn off radio when watching tv
+- alias: Kodi started playing
   trigger:
     platform: state
     entity_id: media_player.kodi
     to: 'playing'
   action:
-    service: switch.turn_off
-    entity_id: switch.radio
-- alias: Dim lights when tv is paused
+    service: script.kodi_playing
+
+- alias: Kodi was paused
   trigger:
     platform: state
     entity_id: media_player.kodi
-    from: 'playing'
-  condition:
-    condition: state
-    entity_id: sun.sun
-    state: below_horizon
+    to: 'paused'
   action:
-    service: script.kodi_pause
+    service: script.kodi_paused
+
+- alias: Kodi is idle
+  trigger:
+    platform: state
+    entity_id: media_player.kodi
+    to: 'idle'
+  action:
+    service: script.kodi_idle
+
+- alias: TV was turned off
+  trigger:
+    platform: state
+    entity_id: media_player.webostv
+    to: 'off'
+  action:
+    service: script.tv_turned_off
 
 - alias: Computer volume slider
   trigger:
