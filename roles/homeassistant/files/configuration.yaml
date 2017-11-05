@@ -58,6 +58,9 @@ duckdns:
   domain: !secret duckdns_domain
   access_token: !secret duckdns_token
 
+tts:
+  - platform: google
+
 input_number:
   computer_volume:
     name: Computer Volume
