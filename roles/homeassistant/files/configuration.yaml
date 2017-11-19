@@ -86,5 +86,7 @@ updater:
   include_used_components: True
 
 frontend:
+  javascript_version: latest
+
 http:
 sun:
