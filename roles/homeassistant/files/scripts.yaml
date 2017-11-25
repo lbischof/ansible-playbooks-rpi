@@ -57,7 +57,7 @@ kodi_idle:
     - service: light.turn_on
       data:
         entity_id: group.all_lights
-        transition: 3
+        transition: 5
         brightness_pct: 50
 
 
