@@ -76,6 +76,10 @@ google_assistant:
   exposed_domains:
     - switch
 
+xiaomi_aqara:
+  gateways:
+    - key: !secret xiaomi_key
+
 light:
   - platform: lifx
 
