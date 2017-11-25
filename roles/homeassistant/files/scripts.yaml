@@ -25,6 +25,11 @@ kodi_paused:
         entity_id: light.hallway
         transition: 3
         brightness_pct: 50
+    - service: light.turn_on
+      data:
+        entity_id: light.kitchen
+        transition: 3
+        brightness_pct: 50
 
 kodi_playing:
   sequence:
@@ -42,6 +47,10 @@ kodi_playing:
       data:
         entity_id: light.living_room
         transition: 3
+    - service: light.turn_off
+      data:
+        entity_id: light.kitchen
+        transition: 3
     - service: light.turn_on
       data:
         entity_id: light.hallway
@@ -56,7 +65,7 @@ kodi_idle:
       state: below_horizon
     - service: light.turn_on
       data:
-        entity_id: group.all_lights
+        entity_id: group.lights
         transition: 5
         brightness_pct: 50
 

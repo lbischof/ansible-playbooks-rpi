@@ -20,6 +20,7 @@ lights:
     - light.living_room
     - light.bedroom
     - light.hallway
+    - light.kitchen
 family:
   entities:
     - device_tracker.samsung
