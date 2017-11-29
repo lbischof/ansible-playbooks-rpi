@@ -103,7 +103,7 @@ family_home:
   sequence:
     - service: light.turn_on
       data:
-        entity_id: group.all_lights
+        entity_id: group.lights
         transition: 3
         brightness_pct: 100
 
