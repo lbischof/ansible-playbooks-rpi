@@ -9,3 +9,5 @@ group.all_scripts:
   hidden: false
 group.all_devices:
   hidden: false
+light.gateway_light_34ce0088cff7:
+  google_assistant: false
