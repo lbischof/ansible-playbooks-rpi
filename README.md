@@ -1,5 +1,8 @@
 # Ansible Playbooks for my Raspberry PI
 
+https://gitlab.com/lbischof/ansible-playbooks-rpi
+![Moved to GitLab](https://i.imgur.com/wGgvnPq.png)
+
 ## Requirements
 Kodi addon for turning on TV: https://github.com/joshjowen/script.json-cec
 
